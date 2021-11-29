@@ -1,18 +1,21 @@
 class Town {
   public nom: string;
   public population: number;
-  public code: number;
-  constructor(aNom: string, aPop: number, aCode: number) {
+  public codesPostaux: string;
+  public codeDepartement: string;
+  constructor(aNom: string, aPop: number, aCodeP: string, aDpt: string) {
     this.nom = aNom;
     this.population = aPop;
-    this.code = aCode;
+    this.codesPostaux = aCodeP;
+    this.codeDepartement = aDpt;
   }
 }
 
 type TownServe = {
   nom: string;
   population: number;
-  code: number;
+  codesPostaux: string;
+  codeDepartement: string;
 };
 
 function getValues(town: string): Promise<Town[]> {
@@ -22,7 +25,12 @@ function getValues(town: string): Promise<Town[]> {
         let tabTown: Town[] = [];
         for (const townServe of data as TownServe[]) {
           tabTown.push(
-            new Town(townServe.nom, townServe.population, townServe.code)
+            new Town(
+              townServe.nom,
+              townServe.population,
+              townServe.codesPostaux,
+              townServe.codeDepartement
+            )
           );
         }
         return tabTown;
@@ -37,7 +45,10 @@ function displayCities(cities: Town[]) {
 
   for (const town of cities) {
     let li = document.createElement("li") as HTMLLIElement;
-    li.innerText = town.nom;
+    (li.innerHTML = town.nom + "<br>"),
+      (li.innerHTML += " population : " + town.population + "<br>"),
+      (li.innerHTML += " codes postaux : " + town.codesPostaux + "<br>"),
+      (li.innerHTML += " département : " + town.codeDepartement);
     ul!.append(li);
   }
   divResults!.append(ul);
